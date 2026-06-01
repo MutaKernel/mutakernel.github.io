@@ -160,6 +160,9 @@
   }
   figure img{display:block;width:100%;height:auto;border-radius:6px;
     background:var(--paper-2);}
+  /* PDF figure embed — adjust height per figure if needed */
+  .pdffig{display:block;width:100%;height:320px;border:0;border-radius:6px;
+    background:var(--paper-2);}
   .imgfallback{
     display:flex;align-items:center;justify-content:center;text-align:center;
     min-height:150px;border:1px dashed var(--rule);border-radius:6px;
@@ -220,7 +223,6 @@
   .hero > *{opacity:0;transform:translateY(10px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
   .hero .eyebrow{animation-delay:.05s}
   .hero h1{animation-delay:.14s}
-  .hero .notice{animation-delay:.26s}
   @keyframes rise{to{opacity:1;transform:none}}
   @media (prefers-reduced-motion:reduce){.hero>*{animation:none;opacity:1;transform:none}}
 
@@ -270,7 +272,6 @@
     <header class="hero">
       <p class="eyebrow">Anonymous · double-blind submission</p>
       <h1>MutaKernel: Validating the Validators of LLM-Generated GPU Kernels</h1>
-      <p class="notice">Supplementary material, released anonymously to preserve double-blind review. No author names, affiliations, or identifying links.</p>
     </header>
 
     <!-- ABSTRACT -->
@@ -286,13 +287,15 @@
     <section id="workflow">
       <h2><span class="sec">§</span>Workflow</h2>
       <figure>
-        <img src="figures/study-workflow.pdf" alt="Three-stage study workflow"
-             onerror="this.outerHTML='&lt;div class=&quot;imgfallback&quot;&gt;figures/study-workflow.png&lt;br&gt;(add paper Figure 2 here)&lt;/div&gt;'">
+        <object class="pdffig" data="figures/study-workflow.pdf#toolbar=0&navpanes=0&view=FitH" type="application/pdf">
+          <div class="imgfallback"><a href="figures/study-workflow.pdf">figures/study-workflow.pdf</a><br>(add paper Figure 2 here)</div>
+        </object>
         <figcaption><b>Figure 1.</b> The three-stage study workflow: mutant generation, equivalence filtering, and validator evaluation.</figcaption>
       </figure>
       <figure>
-        <img src="figures/mutakernel-workflow.pdf" alt="MutaKernel workflow"
-             onerror="this.outerHTML='&lt;div class=&quot;imgfallback&quot;&gt;figures/mutakernel-workflow.png&lt;br&gt;(add paper Figure 3 here)&lt;/div&gt;'">
+        <object class="pdffig" data="figures/mutakernel-workflow.pdf#toolbar=0&navpanes=0&view=FitH" type="application/pdf">
+          <div class="imgfallback"><a href="figures/mutakernel-workflow.pdf">figures/mutakernel-workflow.pdf</a><br>(add paper Figure 3 here)</div>
+        </object>
         <figcaption><b>Figure 2.</b> MutaKernel workflow. Survived and candidate-equivalent mutants from EMD enter tier classification, which assigns testing intensity. Five test dimensions then run across a main track and a config-stress track. Final labeling produces a per-mutant verdict.</figcaption>
       </figure>
     </section>
