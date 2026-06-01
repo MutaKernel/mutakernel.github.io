@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>MutaKernel — Supplementary Material</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f0e6;
+    --paper-2:#efeadd;
+    --card:#faf7ef;
+    --ink:#1c1a16;
+    --ink-soft:#544f45;
+    --ink-faint:#8a8478;
+    --accent:#b1442a;
+    --accent-deep:#8a3219;
+    --rule:#d8d1bf;
+    --rule-soft:#e4ddcc;
+    --code-bg:#272320;
+    --code-ink:#ece5d6;
+    --code-accent:#e0a87f;
+    --maxw:1220px;
+    --content:860px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hanken Grotesk",-apple-system,sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  /* faint paper texture */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(177,68,42,.04), transparent 40%),
+      radial-gradient(circle at 88% 82%, rgba(28,26,22,.05), transparent 45%);
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-deep);text-decoration:underline;text-underline-offset:3px}
+  code{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.86em;
+    background:rgba(28,26,22,.055);
+    border:1px solid var(--rule-soft);
+    padding:.05em .35em;
+    border-radius:4px;
+    word-break:break-word;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:40;
+    background:rgba(244,240,230,.86);
+    backdrop-filter:saturate(140%) blur(8px);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar-in{
+    max-width:var(--maxw);margin:0 auto;padding:.7rem 2rem;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  }
+  .brand{
+    font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);
+  }
+  .brand b{color:var(--accent);font-weight:500}
+  .toc-toggle{
+    display:none;font-family:"JetBrains Mono",monospace;font-size:.72rem;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+    background:none;border:1px solid var(--rule);border-radius:6px;
+    padding:.4rem .7rem;cursor:pointer;
+  }
+
+  /* ---------- shell ---------- */
+  .shell{max-width:var(--maxw);margin:0 auto;padding:0 2rem;
+    display:grid;grid-template-columns:230px minmax(0,1fr);gap:3.2rem;}
+  /* ---------- sidebar TOC ---------- */
+  nav.toc{
+    position:sticky;top:64px;align-self:start;height:calc(100vh - 64px);
+    overflow:auto;padding:2.6rem 0 3rem;
+  }
+  nav.toc .toc-label{
+    font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-faint);margin:0 0 1rem;
+  }
+  nav.toc ol{list-style:none;margin:0;padding:0}
+  nav.toc li{margin:0}
+  nav.toc a{
+    display:block;color:var(--ink-soft);padding:.34rem 0 .34rem .9rem;
+    border-left:2px solid transparent;font-size:.92rem;line-height:1.35;
+    transition:color .15s,border-color .15s;
+  }
+  nav.toc a .mk{font-family:"JetBrains Mono",monospace;color:var(--ink-faint);
+    font-size:.78rem;margin-right:.5rem}
+  nav.toc a:hover{color:var(--ink);text-decoration:none}
+  nav.toc a.active{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+  nav.toc a.sub{padding-left:1.7rem;font-size:.85rem}
+
+  /* ---------- main ---------- */
+  main{padding:2.6rem 0 6rem;max-width:var(--content);min-width:0}
+  .hero{margin-bottom:3rem}
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 1.1rem;
+  }
+  h1{
+    font-family:"Fraunces",serif;font-weight:500;font-size:clamp(2.1rem,4.6vw,3.4rem);
+    line-height:1.08;letter-spacing:-.01em;margin:0 0 1.3rem;
+  }
+  .notice{
+    display:inline-block;font-size:.86rem;color:var(--ink-soft);
+    background:var(--paper-2);border:1px solid var(--rule);border-left:3px solid var(--accent);
+    border-radius:0 6px 6px 0;padding:.55rem .9rem;margin:0;
+  }
+
+  h2{
+    font-family:"Fraunces",serif;font-weight:500;font-size:1.95rem;line-height:1.15;
+    letter-spacing:-.01em;margin:3.6rem 0 .4rem;scroll-margin-top:84px;
+    display:flex;align-items:baseline;gap:.7rem;
+  }
+  h2 .sec{font-family:"JetBrains Mono",monospace;font-size:1.05rem;color:var(--accent);
+    font-weight:500;flex:none}
+  h3{
+    font-family:"Fraunces",serif;font-weight:500;font-size:1.28rem;
+    margin:2.3rem 0 .6rem;scroll-margin-top:84px;
+  }
+  h4{
+    font-family:"JetBrains Mono",monospace;font-weight:500;font-size:1rem;
+    color:var(--accent-deep);margin:1.7rem 0 .3rem;letter-spacing:.01em;
+  }
+  .lead-note{color:var(--ink-soft);font-style:italic;margin:.2rem 0 1.4rem;
+    font-family:"Fraunces",serif;font-size:1.02rem}
+  section > p{margin:.9rem 0}
+  .section-rule{border:none;border-top:1px solid var(--rule);margin:3.4rem 0 0}
+
+  hr.div{border:none;border-top:1px solid var(--rule);margin:0}
+
+  /* abstract */
+  .abstract{
+    background:var(--card);border:1px solid var(--rule);border-radius:10px;
+    padding:1.8rem 2rem;margin:0 0 3rem;
+    box-shadow:0 1px 0 rgba(28,26,22,.04);
+  }
+  .abstract p{margin:0 0 1rem}
+  .abstract p:last-child{margin-bottom:0}
+
+  /* figures */
+  figure{
+    margin:0 0 2rem;background:var(--card);border:1px solid var(--rule);
+    border-radius:10px;padding:1.1rem 1.1rem 1rem;
+  }
+  figure img{display:block;width:100%;height:auto;border-radius:6px;
+    background:var(--paper-2);}
+  /* PDF figure embed — adjust height per figure if needed */
+  .pdffig{display:block;width:100%;height:320px;border:0;border-radius:6px;
+    background:var(--paper-2);}
+  .imgfallback{
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    min-height:150px;border:1px dashed var(--rule);border-radius:6px;
+    color:var(--ink-faint);font-family:"JetBrains Mono",monospace;font-size:.8rem;
+    padding:1.5rem;line-height:1.7;
+  }
+  figcaption{margin-top:.85rem;font-family:"Fraunces",serif;font-style:italic;
+    font-size:.96rem;color:var(--ink-soft);line-height:1.5}
+  figcaption b{font-style:normal;font-weight:600;color:var(--ink)}
+
+  /* lists */
+  ul.facts{list-style:none;margin:.5rem 0 1.2rem;padding:0}
+  ul.facts li{position:relative;padding:.18rem 0 .18rem 1.3rem;margin:.1rem 0}
+  ul.facts li::before{content:"";position:absolute;left:.1rem;top:.85em;
+    width:5px;height:5px;background:var(--accent);border-radius:50%}
+  ul.facts li em{color:var(--accent-deep);font-style:normal;font-weight:600;
+    font-family:"JetBrains Mono",monospace;font-size:.82em;letter-spacing:.02em;
+    margin-right:.15em}
+  .toclink{display:flex;flex-wrap:wrap;gap:.4rem 1.4rem;margin:1rem 0 0;padding:0;
+    list-style:none;font-size:.93rem}
+  .toclink a{font-family:"JetBrains Mono",monospace;font-size:.84rem}
+
+  /* tables */
+  .tablewrap{overflow-x:auto;margin:1rem 0 1.6rem;
+    border:1px solid var(--rule);border-radius:9px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:520px}
+  caption{caption-side:top;text-align:left;font-family:"JetBrains Mono",monospace;
+    font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);
+    padding:.8rem 1rem .2rem}
+  th,td{padding:.6rem .9rem;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--rule-soft)}
+  thead th{
+    font-family:"JetBrains Mono",monospace;font-weight:500;font-size:.72rem;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+    border-bottom:1.5px solid var(--rule);background:var(--paper-2);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:rgba(177,68,42,.035)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td .op{font-family:"JetBrains Mono",monospace;font-size:.84em;color:var(--accent-deep)}
+  .indent{padding-left:1.6rem !important;color:var(--ink-soft)}
+  strong.hl{color:var(--accent-deep)}
+
+  /* code blocks */
+  pre{
+    background:var(--code-bg);color:var(--code-ink);border-radius:9px;
+    padding:1.1rem 1.3rem;overflow-x:auto;margin:1.1rem 0 1.6rem;
+    font-family:"JetBrains Mono",monospace;font-size:.82rem;line-height:1.6;
+    border-left:3px solid var(--accent);
+  }
+  pre code{background:none;border:none;padding:0;color:inherit;font-size:1em}
+
+  /* footer */
+  footer{border-top:1px solid var(--rule);margin-top:4rem;padding:2rem 0 0;
+    color:var(--ink-faint);font-size:.85rem;font-family:"JetBrains Mono",monospace;
+    letter-spacing:.04em}
+
+  /* load animation */
+  .hero > *{opacity:0;transform:translateY(10px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero .eyebrow{animation-delay:.05s}
+  .hero h1{animation-delay:.14s}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.hero>*{animation:none;opacity:1;transform:none}}
+
+  /* responsive */
+  @media (max-width:920px){
+    .shell{grid-template-columns:1fr;gap:0;padding:0 1.4rem}
+    .toc-toggle{display:block}
+    nav.toc{
+      position:fixed;top:0;left:0;right:0;bottom:0;height:auto;z-index:60;
+      background:var(--paper);padding:5rem 1.6rem 2rem;display:none;
+    }
+    nav.toc.open{display:block}
+    main{padding:1.8rem 0 4rem}
+    .topbar-in{padding:.7rem 1.4rem}
+  }
+  @media (max-width:560px){
+    body{font-size:16px}
+    h2{font-size:1.6rem}
+    .abstract,figure{padding:1.2rem}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brand"><b>MutaKernel</b> · Supplementary Material</span>
+    <button class="toc-toggle" id="tocToggle" aria-label="Toggle contents">Contents</button>
+  </div>
+</div>
+
+<div class="shell">
+
+  <nav class="toc" id="toc">
+    <p class="toc-label">On this page</p>
+    <ol>
+      <li><a href="#abstract"><span class="mk">§</span>Abstract</a></li>
+      <li><a href="#workflow"><span class="mk">§</span>Workflow</a></li>
+      <li><a href="#operators"><span class="mk">A</span>Mutation operators</a></li>
+      <li><a href="#emd"><span class="mk">B</span>EMD Layer-1 rules</a></li>
+      <li><a href="#policies"><span class="mk">C</span>Stress-policy library</a></li>
+      <li><a href="#rq5"><span class="mk">D</span>ADRS repair (RQ5)</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="eyebrow">Anonymous · double-blind submission</p>
+      <h1>MutaKernel: Validating the Validators of LLM-Generated GPU Kernels</h1>
+    </header>
+
+    <!-- ABSTRACT -->
+    <section id="abstract">
+      <h2><span class="sec">§</span>Abstract</h2>
+      <div class="abstract">
+        <p>Large language models are increasingly used to automate performance optimization in computer systems. In AI-Driven Research for Systems (ADRS), LLMs generate candidate optimizations, evaluate them on target workloads, and refine later candidates using measured feedback. Although this loop depends critically on evaluator quality, prior ADRS work has largely overlooked this issue and focused mainly on performance feedback. As a result, correctness validation remains underexamined, creating a risk of reward hacking where generated code passes limited validation while violating the intended semantics.</p>
+        <p>This paper studies evaluator reliability in LLM-driven GPU kernel optimization, a rapidly growing ADRS sub-domain. We develop a mutation-testing methodology, supported by a four-layer equivalence-filtering pipeline and equivalent mutant detection approach, to measure validator fault-detection effectiveness. Our study finds that 168 of the 534 kernels accepted by KernelBench are buggy. Guided by these findings, we propose MutaKernel, an enhanced validator that strengthens testing along five orthogonal dimensions and allocates testing budget by fault category. MutaKernel detects 222 defective kernels among 597 public kernels released by four prior tools and previously accepted by the KernelBench validator. These results show that validator reliability is a key bottleneck for trustworthy ADRS, and that targeted test strengthening can substantially reduce the risk of accepting incorrect optimized kernels.</p>
+      </div>
+    </section>
+
+    <!-- WORKFLOW -->
+    <section id="workflow">
+      <h2><span class="sec">§</span>Workflow</h2>
+      <figure>
+        <object class="pdffig" data="figures/study-workflow.pdf#toolbar=0&navpanes=0&view=FitH" type="application/pdf">
+          <div class="imgfallback"><a href="figures/study-workflow.pdf">figures/study-workflow.pdf</a><br>(add paper Figure 2 here)</div>
+        </object>
+        <figcaption><b>Figure 1.</b> The three-stage study workflow: mutant generation, equivalence filtering, and validator evaluation.</figcaption>
+      </figure>
+      <figure>
+        <object class="pdffig" data="figures/mutakernel-workflow.pdf#toolbar=0&navpanes=0&view=FitH" type="application/pdf">
+          <div class="imgfallback"><a href="figures/mutakernel-workflow.pdf">figures/mutakernel-workflow.pdf</a><br>(add paper Figure 3 here)</div>
+        </object>
+        <figcaption><b>Figure 2.</b> MutaKernel workflow. Survived and candidate-equivalent mutants from EMD enter tier classification, which assigns testing intensity. Five test dimensions then run across a main track and a config-stress track. Final labeling produces a per-mutant verdict.</figcaption>
+      </figure>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- OPERATORS -->
+    <section id="operators">
+      <h2><span class="sec">A</span>Mutation operators</h2>
+      <p class="lead-note">Per-operator details for the 16 operators in Table&nbsp;1.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Category</th><th>Operators</th></tr></thead>
+          <tbody>
+            <tr><td>A — Classical Arithmetic</td><td><span class="op">arith_replace</span>, <span class="op">relop_replace</span>, <span class="op">const_perturb</span></td></tr>
+            <tr><td>B — GPU Parallel Semantics</td><td><span class="op">index_replace</span>, <span class="op">sync_remove</span>, <span class="op">mask_boundary</span>, <span class="op">launch_config_mutate</span></td></tr>
+            <tr><td>C — ML Numerical Semantics</td><td><span class="op">stab_remove</span>, <span class="op">epsilon_modify</span>, <span class="op">scale_modify</span>, <span class="op">init_modify</span>, <span class="op">acc_downgrade</span>, <span class="op">cast_remove</span>, <span class="op">reduction_reorder</span></td></tr>
+            <tr><td>D — LLM-Specific Error Patterns</td><td><span class="op">broadcast_unsafe</span>, <span class="op">layout_assume</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>For each operator: the sites it matches, the mutation it applies, and the escape mechanism (why the defect can pass a default-input <code>allclose</code> check).</p>
+
+      <h3>A — Classical Arithmetic</h3>
+
+      <h4>arith_replace</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> Binary <code>+ - * /</code> in the Python/Triton AST (located via <code>tokenize</code>, excluding decorator expressions) and in the CUDA C++ string (character scan that excludes compound operators <code>++ += -- -= -&gt; ** *= // /= /*</code>, requires a binary left operand, and filters pointer declarations against a 37-entry C-type keyword list).</li>
+        <li><em>Mutation.</em> One-way per site: <code>+→-</code>, <code>-→+</code>, <code>*→/</code>, <code>/→*</code>.</li>
+        <li><em>Escape.</em> On small-magnitude inputs the arithmetic difference falls below the <code>1e-2</code> tolerance.</li>
+      </ul>
+
+      <h4>relop_replace</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> <code>Compare</code> nodes in Python/Triton; in CUDA, two-character ops (<code>&lt;= &gt;= == !=</code>) preferred, with shifts (<code>&lt;&lt; &gt;&gt;</code>), kernel-launch syntax (<code>&lt;&lt;&lt; &gt;&gt;&gt;</code>), and template angle brackets filtered out.</li>
+        <li><em>Mutation.</em> <code>&lt; ↔ &lt;=</code>, <code>&gt; ↔ &gt;=</code>, <code>== ↔ !=</code>.</li>
+        <li><em>Escape.</em> Random inputs rarely land on the boundary that distinguishes <code>&lt;</code> from <code>&lt;=</code>.</li>
+      </ul>
+
+      <h4>const_perturb</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> Integer literals (excluding <code>0</code>/<code>1</code> and GPU-scheduling configuration lines containing <code>BLOCK_SIZE</code>, <code>WARP_SIZE</code>, <code>num_warps</code>, <code>threadIdx</code>, <code>blockDim</code>, <code>dim3</code>, etc.) and float literals (excluding <code>0.0</code>/<code>1.0</code>; handles scientific notation and <code>f/F/l/L</code> suffixes).</li>
+        <li><em>Mutation (two per site).</em> Integers → <code>+1</code> and <code>-1</code>; floats → <code>×1.01</code> and <code>×0.99</code>.</li>
+        <li><em>Escape.</em> Sub-1% perturbations are absorbed by the tolerance.</li>
+      </ul>
+
+      <h3>B — GPU Parallel Semantics</h3>
+
+      <h4>index_replace</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> Triton <code>tl.program_id(N)</code>; CUDA <code>threadIdx|blockIdx|blockDim|gridDim . {x,y,z}</code>.</li>
+        <li><em>Mutation (two per site).</em> Swap to each of the other two axes.</li>
+        <li><em>Escape.</em> Under a 1-D launch the other axes degenerate to the same value, so symmetric inputs leave the swap unobservable.</li>
+      </ul>
+
+      <h4>sync_remove</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> <code>tl.debug_barrier()</code> / <code>__syncthreads()</code>.</li>
+        <li><em>Mutation.</em> Delete the barrier.</li>
+        <li><em>Equivalence guard.</em> Flagged as a reduction-tail sync (algorithmically absorbed) when (1) the first non-trivial statement within four lines is a <code>threadIdx.x == 0</code> / <code>tid == 0</code> guard, or (2) it is the last <code>__syncthreads()</code> and all subsequent shared-memory accesses use literal index <code>[0]</code>.</li>
+        <li><em>Escape.</em> At small magnitudes the race produces bit jitter within the loose tolerance.</li>
+      </ul>
+
+      <h4>mask_boundary</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> Triton lines with <code>mask=</code> / <code>tl.where</code>; CUDA boundary guards involving <code>threadIdx</code>/<code>blockIdx</code> or early-return comparisons (<code>if (i &gt;= n) return;</code>).</li>
+        <li><em>Mutation.</em> Tightening only: <code>x &lt; y → x &lt; y-1</code>; on the <code>&gt;=</code> path, <code>x &gt;= y → x &gt; y</code> and <code>x &gt;= y → x &gt;= y+1</code>. The loosening direction is not emitted (a loosened mask almost always reads out of bounds → stillborn).</li>
+        <li><em>Escape.</em> The excluded elements lie in the padding region, never reached under default inputs.</li>
+      </ul>
+
+      <h4>launch_config_mutate</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> <code>triton.cdiv(...)</code>, <code>X // Y</code>, CUDA <code>cdiv(...)</code>, and the <code>(N + BLOCK - 1) / BLOCK</code> ceiling-division idiom.</li>
+        <li><em>Mutation.</em> <code>expr → expr - 1</code> only (the <code>+1</code> direction only launches redundant threads the in-kernel mask filters, yielding an equivalent mutant).</li>
+        <li><em>Escape.</em> Grid-stride loops absorb the missing block on divisible shapes; the gap appears only on non-divisible batch sizes.</li>
+      </ul>
+
+      <h3>C — ML Numerical Semantics</h3>
+
+      <h4>stab_remove</h4>
+      <ul class="facts">
+        <li><em>Target.</em> The <code>x - max(x)</code> trick in softmax.</li>
+        <li><em>Sites.</em> Triton/PyTorch <code>var - tl.max(var, …)</code> / <code>torch.max</code> / <code>var.max(…)</code> (verified that the subtracted term equals the variable); CUDA <code>expf(val - row_max)</code> and the split form <code>val - max_val</code>.</li>
+        <li><em>Mutation.</em> Drop the <code>- max(...)</code> term.</li>
+        <li><em>Escape.</em> For small-magnitude inputs <code>exp(x)</code> does not overflow, so both versions agree.</li>
+      </ul>
+
+      <h4>epsilon_modify</h4>
+      <ul class="facts">
+        <li><em>Target.</em> Stability epsilons in LayerNorm / safe-division / log.</li>
+        <li><em>Sites.</em> Scientific notation (<code>1e-5</code>, <code>1e-6f</code>, …) and decimals with ≥4 leading zeros (<code>0.00001f</code>), filtered to magnitude ≤ <code>1e-3</code>, in both Python and CUDA.</li>
+        <li><em>Mutation (two per site).</em> <code>eps → 0</code> and <code>eps → 1e-2</code> (suffix preserved).</li>
+        <li><em>Escape.</em> Most random inputs never drive the denominator near zero.</li>
+      </ul>
+
+      <h4>scale_modify</h4>
+      <ul class="facts">
+        <li><em>Target.</em> The <code>1/√d</code> scaling in attention / normalization.</li>
+        <li><em>Sites.</em> <code>1 / sqrt(x)</code> / <code>1.0 / torch.sqrt(x)</code> (drop the <code>1/</code> prefix); the <code>rsqrt(x)</code> family (extract the argument, e.g. <code>rsqrt(var+eps) → var+eps</code>); CUDA <code>1.0f / sqrtf(x)</code> and <code>rsqrtf(expr)</code>.</li>
+        <li><em>Mutation.</em> Invert or remove the inverse-square-root scaling.</li>
+        <li><em>Escape.</em> When <code>d</code> is small the scale difference can stay within tolerance.</li>
+      </ul>
+
+      <h4>init_modify</h4>
+      <ul class="facts">
+        <li><em>Target.</em> Initial values of min/max reductions.</li>
+        <li><em>Sites.</em> Python <code>float('-inf')</code>/<code>float('inf')</code>/<code>tl.full(…, -inf, …)</code>; CUDA <code>±INFINITY</code>, <code>±FLT_MAX</code>, <code>±HUGE_VALF</code>.</li>
+        <li><em>Mutation (two per site).</em> <code>±inf → 0.0</code> and <code>±inf → ±1e10</code>.</li>
+        <li><em>Escape.</em> If the data range lies within <code>[-1e10, 1e10]</code>, <code>-1e10</code> behaves like <code>-inf</code>.</li>
+      </ul>
+
+      <h4>acc_downgrade</h4>
+      <ul class="facts">
+        <li><em>Target.</em> FP32 accumulator demoted to FP16.</li>
+        <li><em>Sites.</em> <code>tl.zeros(…, dtype=float32)</code>, <code>torch.zeros(…, dtype=float32)</code>, <code>.to(float32)</code>, <code>.float()</code>, <code>.double()</code>; CUDA <code>static_cast&lt;float&gt;</code>, <code>(float)expr</code>, <code>__half2float</code>.</li>
+        <li><em>Mutation.</em> Demote one precision level (<code>float32→float16</code>, <code>float→__half</code>, <code>double→float</code>; strip <code>__half2float</code>).</li>
+        <li><em>Escape.</em> On small reductions FP16 precision suffices; the gap appears only at scale.</li>
+      </ul>
+
+      <h4>cast_remove</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> <code>.to(float32/float16/bfloat16/int32/int64)</code>, <code>.float()</code>, <code>.half()</code>, <code>tl.cast(x, dtype)</code>; CUDA <code>static_cast&lt;T&gt;(expr)</code>, <code>(float)expr</code>, <code>__float2half</code>/<code>__half2float</code>.</li>
+        <li><em>Mutation.</em> Strip the cast wrapper.</li>
+        <li><em>Equivalence guard.</em> A <code>static_cast&lt;T&gt;</code> is flagged redundant when the LHS type already matches <code>T</code> (C++ implicit conversion makes the cast a no-op).</li>
+        <li><em>Escape.</em> When the input dtype already matches the target, removing the cast has no effect.</li>
+      </ul>
+
+      <h4>reduction_reorder</h4>
+      <ul class="facts">
+        <li><em>Target.</em> Non-associativity of floating-point addition.</li>
+        <li><em>Sites.</em> Triton/PyTorch <code>tl.sum(t, axis=N)</code> → <code>tl.sum(t[::-1], axis=N)</code>, <code>torch.sum(t, dim=N)</code> → <code>torch.sum(torch.flip(t,(N,)), dim=N)</code>. (CUDA hand-written reductions are out of scope for this operator.)</li>
+        <li><em>Mutation.</em> Reverse the summation order.</li>
+        <li><em>Escape.</em> The difference is typically at the <code>1e-7</code> level, far below <code>1e-2</code>.</li>
+      </ul>
+
+      <h3>D — LLM-Specific Error Patterns</h3>
+      <p>These act on the Python layer (PyTorch tensor ops in the wrapper).</p>
+
+      <h4>broadcast_unsafe</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> <code>.expand(...)</code>, <code>.expand_as(...)</code>, <code>.broadcast_to(...)</code>, <code>tl.broadcast_to(...)</code>, <code>.unsqueeze(...)</code>. (Not <code>.reshape()</code>/<code>.view()</code>: removing a required reshape almost certainly triggers a shape mismatch → stillborn.)</li>
+        <li><em>Mutation.</em> Delete the alignment call (or extract the first argument for <code>tl.broadcast_to</code>).</li>
+        <li><em>Escape.</em> Symmetric values mask a wrong broadcast direction.</li>
+      </ul>
+
+      <h4>layout_assume</h4>
+      <ul class="facts">
+        <li><em>Sites.</em> <code>.contiguous()</code> / <code>.is_contiguous()</code>.</li>
+        <li><em>Equivalence guard.</em> A <code>.contiguous()</code> is mutated only when preceded on the same line by a layout-changing op (<code>.transpose</code>, <code>.permute</code>, <code>.mT</code>, <code>.T</code>, <code>.t()</code>, or a slice); a purely defensive <code>.contiguous()</code> is skipped as equivalent.</li>
+        <li><em>Mutation.</em> Delete the call.</li>
+        <li><em>Escape.</em> A contiguous input layout happens to satisfy the assumption.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- EMD -->
+    <section id="emd">
+      <h2><span class="sec">B</span>EMD Layer-1 static rules</h2>
+      <p class="lead-note">Rule definitions for Layer 1 of the four-layer EMD pipeline.</p>
+      <p>Layer 1 applies four operator-aware static rules, adapted from EMS (Kushigian et al., ISSTA 2024) to the CUDA execution model. A rule hit promotes a survived mutant to <strong class="hl">strict-equivalent</strong> without executing the kernel. Rules are tried in order; any exception during matching is caught and the rule is skipped (conservative).</p>
+
+      <h4>Rule 1 — boundary_unreachable</h4>
+      <ul class="facts">
+        <li><em>Applies to.</em> <code>relop_replace</code>, <code>mask_boundary</code>.</li>
+        <li><em>Principle.</em> In CUDA, <code>threadIdx.d ∈ [0, blockDim.d − 1]</code>. Therefore <code>(t &lt; B) ≡ (t &lt;= B) ≡ True</code> and <code>(t &gt; B) ≡ (t &gt;= B) ≡ False</code> for every legal thread, so swapping <code>&lt;</code> for <code>&lt;=</code> (or <code>&gt;</code> for <code>&gt;=</code>) on a <code>threadIdx.d</code> vs <code>blockDim.d</code> comparison does not change the guard's truth value.</li>
+        <li><em>Match.</em> Regex <code>threadIdx.([xyz]) (&lt;|&lt;=|&gt;|&gt;=) blockDim.([xyz])</code>; confirm the two dimension identifiers are identical and the operator pair is <code>{&lt;, &lt;=}</code> or <code>{&gt;, &gt;=}</code> between original and mutant.</li>
+      </ul>
+
+      <h4>Rule 2 — dead_write</h4>
+      <ul class="facts">
+        <li><em>Applies to.</em> <code>arith_replace</code>, <code>const_perturb</code>, <code>scale_modify</code>, <code>init_modify</code>.</li>
+        <li><em>Principle.</em> If a mutation changes the right-hand side of an assignment but the variable is unconditionally reassigned before its next read, the mutation is overwritten and cannot affect later computation.</li>
+        <li><em>Match.</em> Identify the assigned variable (excluding CUDA keywords such as <code>if</code>, <code>for</code>, <code>__global__</code>); scan forward from the mutated line. If a reassignment is reached before any read, return equivalent; if a read comes first, return non-equivalent. Blank and comment lines are skipped.</li>
+      </ul>
+
+      <h4>Rule 3 — mask_noreach</h4>
+      <ul class="facts">
+        <li><em>Applies to.</em> <code>mask_boundary</code>.</li>
+        <li><em>Principle.</em> Tightening a boundary guard (<code>idx &lt; n → idx &lt; n−1</code>) affects only padding-region threads, whose writes fall outside the valid output range.</li>
+        <li><em>Match.</em> Regex <code>(idx|tid|index|i|gid) (&lt;|&lt;=) (\w+)</code>; recognize tightening (<code>&lt;=</code> → <code>&lt;</code>, or the right-hand bound decremented).</li>
+      </ul>
+
+      <h4>Rule 4 — dead_host_constant</h4>
+      <ul class="facts">
+        <li><em>Applies to.</em> <code>const_perturb</code>.</li>
+        <li><em>Principle.</em> Under the fixed-shape contract, <code>get_inputs()</code> and <code>get_init_inputs()</code> always come from the reference module, not the mutant. So if <code>const_perturb</code> changes a module-level constant (e.g. <code>N = 2048 → 2049</code>) that is not referenced by the <code>ModelNew</code>/<code>Model</code> class, the mutation is dead code that can never affect the kernel's execution path.</li>
+        <li><em>Implementation (conservative short-circuit order).</em> (1)&nbsp;operator must be <code>const_perturb</code>; (2)&nbsp;the file must parse; (3)&nbsp;the mutated line must not lie inside any <code>ClassDef</code>; (4)&nbsp;nor inside any <code>FunctionDef</code> / <code>AsyncFunctionDef</code>; (5)&nbsp;it must be a simple module-level assignment with a single <code>Name</code> target; (6)&nbsp;if the assigned name appears anywhere (Store or Load) inside <code>ModelNew</code> or <code>Model</code>, return non-equivalent; (7)&nbsp;otherwise the mutant is strict-equivalent. Step&nbsp;6 is an existence check by design: it conservatively refuses to declare dead code whenever a same-named variable is present, even if unrelated.</li>
+      </ul>
+
+<pre><code>Layer1_StaticRules(m):
+    rules ← [boundary_unreachable, dead_write, mask_noreach, dead_host_constant]
+    for rule in rules:
+        try:
+            if rule(m): return (STRICT, rule.name)
+        except Exception:
+            continue                  # conservative: skip on error
+    return (CONTINUE, None)</code></pre>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- POLICIES -->
+    <section id="policies">
+      <h2><span class="sec">C</span>Stress-policy library</h2>
+      <p class="lead-note">The per-family policy list and the operator-to-policy priority map.</p>
+      <p>The 21 stress policies are used by the <code>value_stress</code> and <code>training_stress</code> dimensions. Every policy keeps shape and dtype fixed and changes only the numeric values in the tensors.</p>
+
+      <h3>Per-family policy list</h3>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Family 1 — extreme numeric distributions</caption>
+          <thead><tr><th>Policy</th><th>Numeric character</th><th>Targeted behavior</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td><span class="op">large_magnitude</span></td><td><code>randn × 1000</code></td><td>arithmetic-overflow path divergence</td><td>FPGen [ICSE'20]</td></tr>
+            <tr><td><span class="op">extreme_magnitude</span></td><td><code>randn × 1e6</code></td><td>more aggressive overflow exposure</td><td>FPGen [ICSE'20]</td></tr>
+            <tr><td><span class="op">near_overflow</span></td><td><code>randn ×</code> dtype upper bound (FP32 ~1e30, FP16 ~60000)</td><td>path divergence near the precision limit</td><td>FPGen [ICSE'20]</td></tr>
+            <tr><td><span class="op">near_zero</span></td><td><code>randn × 1e-7</code></td><td>epsilon-related branches (÷0, rsqrt)</td><td>FPGen [ICSE'20]</td></tr>
+            <tr><td><span class="op">denormals</span></td><td><code>randn × 1e-38</code></td><td>denormal-number handling differences</td><td>FPGen [ICSE'20]</td></tr>
+            <tr><td><span class="op">near_epsilon</span></td><td>uniform in <code>[1e-7, 1e-5]</code></td><td>epsilon decision boundary</td><td>FPGen [ICSE'20]</td></tr>
+            <tr><td><span class="op">mixed_extremes</span></td><td>50% × 10000 + 50% × 0.0001</td><td>mixed extremes expose precision paths</td><td>Laguna [SC'24]</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Family 2 — boundary values and sign distributions</caption>
+          <thead><tr><th>Policy</th><th>Numeric character</th><th>Targeted behavior</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td><span class="op">all_negative</span></td><td><code>−|randn| × 100</code></td><td>exposes <code>init_modify</code> (0 → positive) masking</td><td>BVA</td></tr>
+            <tr><td><span class="op">all_positive</span></td><td><code>|randn| × 100</code></td><td>all-positive control</td><td>BVA</td></tr>
+            <tr><td><span class="op">boundary_last_element</span></td><td><code>randn</code> with last element = 1e4</td><td>off-by-one boundary (<code>mask_boundary</code>)</td><td>BVA</td></tr>
+            <tr><td><span class="op">relop_boundary_hit</span></td><td><code>arange % 10</code> (integer-valued)</td><td>relational decision boundary (<code>&lt;</code> vs <code>&lt;=</code>)</td><td>BVA</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Family 3 — sparsity gradient</caption>
+          <thead><tr><th>Policy</th><th>Zero fraction</th><th>Targeted behavior</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td><span class="op">dense_nonzero</span></td><td><code>|randn| + 1.0</code> (0% zeros)</td><td>remove zero-masking of arithmetic differences</td><td>pilot</td></tr>
+            <tr><td><span class="op">sparse</span></td><td>90% zeros + 10% <code>randn × 100</code></td><td>ordinary sparse activations</td><td>BVA</td></tr>
+            <tr><td><span class="op">sparse_extreme</span></td><td>99% zeros + 1% × 1e4</td><td>extreme sparsity boundary</td><td>BVA</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Family 4 — structured / position-sensitive</caption>
+          <thead><tr><th>Policy</th><th>Numeric character</th><th>Targeted behavior</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td><span class="op">structured_ramp</span></td><td><code>[0, 1/n, 2/n, …]</code></td><td>distinguishable positions; exposes index degeneration</td><td>Mu2 [ISSTA'23]</td></tr>
+            <tr><td><span class="op">head_heavy</span></td><td>first 25% extreme, rest near-zero</td><td>exposes index degeneration processing only the head</td><td>Mu2 [ISSTA'23]</td></tr>
+            <tr><td><span class="op">tail_heavy</span></td><td>last 25% extreme, rest near-zero</td><td>exposes index degeneration skipping the tail</td><td>Mu2 [ISSTA'23]</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Family 5 — reduction/accumulation adversarial + special behavior</caption>
+          <thead><tr><th>Policy</th><th>Numeric character</th><th>Targeted behavior</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td><span class="op">alternating_sign</span></td><td>alternating ± × 100</td><td>summation-order sensitivity (<code>reduction_reorder</code>)</td><td>Higham [2002]</td></tr>
+            <tr><td><span class="op">reduction_adversarial</span></td><td>alternating ±1e4 + small noise</td><td>maximizes FP reduction error</td><td>Higham [2002]</td></tr>
+            <tr><td><span class="op">uniform_constant</span></td><td>all 88.0</td><td>exposes shift-invariance assumptions (<code>scale_modify</code>)</td><td>Magneto [ISSTA'21]</td></tr>
+            <tr><td><span class="op">init_sensitive</span></td><td>random all-positive or all-negative</td><td>exposes min/max initialization differences</td><td>pilot</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Operator-to-policy priority map</h3>
+      <p>Orders the policies for <code>value_stress</code> and <code>training_stress</code> so the policy most likely to kill a given operator runs first.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Operator</th><th>Recommended policies (in order)</th><th>Survival mechanism</th></tr></thead>
+          <tbody>
+            <tr><td><span class="op">epsilon_modify</span></td><td><code>near_zero</code>, <code>denormals</code>, <code>dense_nonzero</code></td><td>eval-mode <code>var ≈ 1</code> masks the eps difference</td></tr>
+            <tr><td><span class="op">scale_modify</span></td><td><code>uniform_constant</code>, <code>structured_ramp</code></td><td><code>running_var = 1.0</code> cancels the scale difference</td></tr>
+            <tr><td><span class="op">stab_remove</span></td><td><code>large_magnitude</code>, <code>near_overflow</code></td><td><code>randn ∈ [−3, 3]</code> never triggers the overflow path</td></tr>
+            <tr><td><span class="op">cast_remove</span></td><td><code>near_overflow</code>, <code>large_magnitude</code></td><td>under FP32, <code>static_cast</code> is identity</td></tr>
+            <tr><td><span class="op">init_modify</span></td><td><code>all_negative</code>, <code>sparse</code></td><td>positive <code>randn</code> masks <code>min_val = 0</code> initialization</td></tr>
+            <tr><td><span class="op">acc_downgrade</span></td><td><code>mixed_extremes</code>, <code>large_magnitude</code></td><td>small-value accumulation hides precision loss</td></tr>
+            <tr><td><span class="op">reduction_reorder</span></td><td><code>mixed_extremes</code>, <code>alternating_sign</code></td><td>random ± values cancel, hiding order differences</td></tr>
+            <tr><td><span class="op">broadcast_unsafe</span></td><td><code>structured_ramp</code></td><td>symmetric values mask the wrong broadcast direction</td></tr>
+            <tr><td><span class="op">layout_assume</span></td><td><code>structured_ramp</code></td><td>contiguous layout happens to satisfy the assumption</td></tr>
+            <tr><td><span class="op">index_replace</span></td><td><code>structured_ramp</code>, <code>large_magnitude</code>, <code>head_heavy</code>, <code>tail_heavy</code></td><td>1-D launch degenerates <code>blockIdx.y/z</code> to 0</td></tr>
+            <tr><td><span class="op">mask_boundary</span></td><td><code>boundary_last_element</code>, <code>sparse</code>, <code>sparse_extreme</code></td><td>default inputs never reach the boundary</td></tr>
+            <tr><td><span class="op">sync_remove</span></td><td><code>large_magnitude</code>, <code>mixed_extremes</code></td><td>race differences absorbed by tolerance at small magnitudes</td></tr>
+            <tr><td><span class="op">launch_config_mutate</span></td><td><code>structured_ramp</code>, <code>large_magnitude</code></td><td>grid-stride loops absorb the config difference</td></tr>
+            <tr><td><span class="op">arith_replace</span></td><td><code>large_magnitude</code>, <code>mixed_extremes</code>, <code>dense_nonzero</code></td><td><code>+/−/×/÷</code> differences invisible at small magnitudes</td></tr>
+            <tr><td><span class="op">relop_replace</span></td><td><code>boundary_last_element</code>, <code>structured_ramp</code>, <code>sparse_extreme</code></td><td><code>randn</code> values do not land on the decision boundary</td></tr>
+            <tr><td><span class="op">const_perturb</span></td><td><code>near_zero</code>, <code>large_magnitude</code></td><td>perturbation absorbed by <code>allclose</code> tolerance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+<pre><code>STRATEGY_MAP = {
+    "epsilon_modify":       ["near_zero", "denormals", "dense_nonzero"],
+    "scale_modify":         ["uniform_constant", "structured_ramp"],
+    "stab_remove":          ["large_magnitude", "near_overflow"],
+    "cast_remove":          ["near_overflow", "large_magnitude"],
+    "init_modify":          ["all_negative", "sparse"],
+    "acc_downgrade":        ["mixed_extremes", "large_magnitude"],
+    "reduction_reorder":    ["mixed_extremes", "alternating_sign"],
+    "broadcast_unsafe":     ["structured_ramp"],
+    "layout_assume":        ["structured_ramp"],
+    "index_replace":        ["structured_ramp", "large_magnitude", "head_heavy", "tail_heavy"],
+    "mask_boundary":        ["boundary_last_element", "sparse", "sparse_extreme"],
+    "sync_remove":          ["large_magnitude", "mixed_extremes"],
+    "launch_config_mutate": ["structured_ramp", "large_magnitude"],
+    "arith_replace":        ["large_magnitude", "mixed_extremes", "dense_nonzero"],
+    "relop_replace":        ["boundary_last_element", "structured_ramp", "sparse_extreme"],
+    "const_perturb":        ["near_zero", "large_magnitude"],
+}</code></pre>
+    </section>
+
+    <hr class="section-rule">
+
+    <!-- RQ5 -->
+    <section id="rq5">
+      <h2><span class="sec">D</span>ADRS repair experiment (RQ5)</h2>
+      <p>RQ5 asks whether the defects MutaKernel exposes are real bugs an advanced LLM can fix, or testing artifacts no model can act on.</p>
+
+      <h3>Setup</h3>
+      <p>We run Claude Opus 4.5 on two defect sets.</p>
+      <p><strong>Repair-KB</strong> contains 18 KernelBench validator-accepted kernels for which the original LLM-generated CUDA kernel passes the baseline <code>torch.allclose</code> check at <code>atol = rtol = 1e-2</code> but fails at least one of MutaKernel's five stress dimensions on the same fixed-shape contract. These 18 kernels are surfaced by running MutaKernel's stress pipeline on each of the 90 validator-accepted kernels from the study, as a byproduct of the mutation experiments, alongside the 166 additional mutant kills reported in RQ3.</p>
+      <p><strong>Repair-Agent</strong> contains the 104 CUDA-Agent kernels that MutaKernel's five stress dimensions flag as defective in RQ4 (the <code>|S|</code> set on CUDA-Agent, of which 101 are stress-only defects <code>|S \ B|</code> and 3 overlap with the baseline positives).</p>
+      <p>Each kernel gets up to three repair rounds. Each round receives the kernel source, the PyTorch reference, and the previous round's per-dimension failure details, and emits a new kernel that MutaKernel re-tests. A kernel is <strong class="hl">framework-fixed</strong> when some round passes every stress dimension.</p>
+
+      <h3>What counts as a real fix</h3>
+      <p>Framework-fixed alone is not enough. An LLM can pass MutaKernel by deleting the CUDA kernel and calling <code>torch.matmul</code> or <code>nn.Conv2d</code> on the reference path. We therefore audit every framework-fixed kernel and label it a <strong class="hl">real CUDA fix</strong> only when the repaired source keeps a custom <code>__global__</code> kernel and <code>forward</code> actually calls it. Repairs that fail this audit fall into three classes:</p>
+      <ul class="facts">
+        <li><em>PyTorch fallback</em> — replaces the kernel with <code>torch.*</code> or <code>nn.*</code>.</li>
+        <li><em>Library wrapper</em> — keeps a <code>load_inline</code> shell but its body calls <code>cublasSgemm</code> or <code>torch::mm</code> with no <code>__global__</code> definitions.</li>
+        <li><em>Non-substantive</em> — changes only a compiler flag, or repairs a kernel whose Round 0 re-test finds no reproducible bug.</li>
+      </ul>
+
+      <h3>Result</h3>
+      <p>Both settings reach framework-fixed rates above 86%, but both real-fix rates fall far below that. Repair-KB drops from 88.9% framework-fixed to 38.9% real-fix; Repair-Agent drops from 86.5% to 14.4%. PyTorch fallback dominates Repair-Agent, where 72 of the 90 framework-fixes delete the CUDA kernel entirely and route through <code>nn.*</code> or <code>torch.*</code>. Repair-KB shows the same pattern at smaller scale, plus 4 library-wrapper repairs specific to its GEMM-heavy targets.</p>
+
+      <div class="tablewrap">
+        <table>
+          <caption>Framework-fixed = passes MutaKernel in some round. Real-fix additionally requires that <code>forward</code> call a custom <code>__global__</code> kernel.</caption>
+          <thead><tr><th>Outcome</th><th class="num">Repair-KB (18)</th><th class="num">Repair-Agent (104)</th></tr></thead>
+          <tbody>
+            <tr><td>Framework-fixed</td><td class="num">16 (88.9%)</td><td class="num">90 (86.5%)</td></tr>
+            <tr><td class="indent">Real CUDA fix</td><td class="num"><strong class="hl">7 (38.9%)</strong></td><td class="num"><strong class="hl">15 (14.4%)</strong></td></tr>
+            <tr><td class="indent">PyTorch fallback</td><td class="num">3 (16.7%)</td><td class="num">72 (69.2%)</td></tr>
+            <tr><td class="indent">Library wrapper</td><td class="num">4 (22.2%)</td><td class="num">0</td></tr>
+            <tr><td class="indent">Non-substantive</td><td class="num">2 (11.1%)</td><td class="num">3 (2.9%)</td></tr>
+            <tr><td>Unfixed</td><td class="num">2 (11.1%)</td><td class="num">14 (13.5%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Extra rounds buy fallback, not fixes</h3>
+      <p>Round 1 produces all 15 Repair-Agent real fixes. Rounds 2 and 3 add 26 more framework-fixes and 0 real fixes; every late-round fix is a PyTorch fallback or a non-substantive change. The model does its real CUDA repair attempt in Round 1; later rounds just push it to abandon CUDA more aggressively to clear the stress test.</p>
+
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Round</th><th class="num">Framework-fixed</th><th class="num">Real CUDA fix</th></tr></thead>
+          <tbody>
+            <tr><td>Round 1</td><td class="num">64</td><td class="num">15</td></tr>
+            <tr><td>Round 2</td><td class="num">16</td><td class="num">0</td></tr>
+            <tr><td>Round 3</td><td class="num">10</td><td class="num">0</td></tr>
+            <tr><td><strong>Total</strong></td><td class="num"><strong>90</strong></td><td class="num"><strong>15</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>L3 kernels get zero real fixes</h3>
+      <p>Repair-Agent's 15 real fixes split 14 on L2, 1 on L1, and 0 on L3. The 20 L3 kernels reach a framework-fixed rate of 95% (19/20), but every L3 framework-fix abandons CUDA-level repair: 17 fall back to PyTorch and 2 are non-substantive TF32-only changes. L3 defects are the hardest to repair at the CUDA level, and the model gives up on all of them.</p>
+
+      <h3>Real fixes are often slower</h3>
+      <p>We benchmark the 7 Repair-KB real fixes against the original buggy kernels under 20 warmup and 50 timed runs. Four real fixes run 1.4 to 3.9 times slower than the original; in these cases the original's speed came from cutting a corner the real fix has to put back, like a truncated matmul loop. Two real fixes run 2.4 and 6.6 times faster, because they removed a redundant computation while restoring correctness. KernelBench's default-input validator cannot tell these apart, so its best-of-N selection rewards fast-but-buggy kernels.</p>
+
+      <h3>Finding</h3>
+      <p>The defects MutaKernel exposes are real and hard. Under strict audit, an advanced LLM can repair only 38.9% of them on KernelBench and 14.4% on CUDA-Agent, against framework-reported rates above 86% on both. This rules out the alternative that MutaKernel's gains over the baseline are testing artifacts. Combined with RQ3's independent audit confirming the residual mutants are equivalents rather than missed bugs, the gap between the baseline and MutaKernel measured in RQ3 reflects real defects.</p>
+    </section>
+
+    <footer>
+      MutaKernel — anonymous supplementary material · double-blind submission
+    </footer>
+  </main>
+</div>
+
+<script>
+  // mobile TOC toggle
+  var toggle = document.getElementById('tocToggle');
+  var toc = document.getElementById('toc');
+  toggle.addEventListener('click', function(){ toc.classList.toggle('open'); });
+  toc.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){ toc.classList.remove('open'); }
+  });
+
+  // active section highlight
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var sections = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){
+        links.forEach(function(l){ l.classList.remove('active'); });
+        var id = en.target.id;
+        if(map[id]) map[id].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  sections.forEach(function(s){ obs.observe(s); });
+</script>
+</body>
+</html>
